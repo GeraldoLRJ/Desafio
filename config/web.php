@@ -9,7 +9,6 @@ $config = [
     /*'catchAll' => [
         'tarefa/index'
     ],*/
-    'defaultRoute' => 'tarefa/index',
     'language' => 'pt-BR',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -28,6 +27,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['site/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -56,6 +56,20 @@ $config = [
             ],
         ],
         */
+    ],
+    'controllerMap' => [
+        'class' => 'yii\base\Controller',
+        'behaviors' => [
+            'access' => [
+                'class' => yii\filters\AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

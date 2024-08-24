@@ -11,6 +11,8 @@ use Yii;
  * @property string $titulo
  * @property string|null $descricao
  * @property string|null $data_criacao
+ * @property string $status
+ * @property string|null $data_vencimento
  */
 class Tarefa extends \yii\db\ActiveRecord
 {
@@ -30,8 +32,8 @@ class Tarefa extends \yii\db\ActiveRecord
         return [
             [['titulo'], 'required'],
             [['descricao'], 'string'],
-            [['data_criacao'], 'safe'],
-            [['titulo'], 'string', 'max' => 255],
+            [['data_criacao', 'data_vencimento'], 'safe'],
+            [['titulo', 'status'], 'string', 'max' => 255],
         ];
     }
 
@@ -45,6 +47,8 @@ class Tarefa extends \yii\db\ActiveRecord
             'titulo' => 'Titulo',
             'descricao' => 'Descricao',
             'data_criacao' => 'Data Criacao',
+            'status' => 'Status',
+            'data_vencimento' => 'Data Vencimento',
         ];
     }
 }

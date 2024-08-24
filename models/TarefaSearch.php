@@ -18,7 +18,7 @@ class TarefaSearch extends Tarefa
     {
         return [
             [['id'], 'integer'],
-            [['titulo', 'descricao', 'data_criacao'], 'safe'],
+            [['titulo', 'descricao', 'data_criacao', 'status', 'data_vencimento'], 'safe'],
         ];
     }
 
@@ -60,10 +60,12 @@ class TarefaSearch extends Tarefa
         $query->andFilterWhere([
             'id' => $this->id,
             'data_criacao' => $this->data_criacao,
+            'data_vencimento' => $this->data_vencimento,
         ]);
 
         $query->andFilterWhere(['like', 'titulo', $this->titulo])
-            ->andFilterWhere(['like', 'descricao', $this->descricao]);
+            ->andFilterWhere(['like', 'descricao', $this->descricao])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

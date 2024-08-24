@@ -33,6 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'titulo',
             'descricao:ntext',
             'data_criacao',
+            'status',
+            'data_vencimento',
         ],
     ]) ?>
 

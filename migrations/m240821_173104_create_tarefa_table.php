@@ -16,7 +16,9 @@ class m240821_173104_create_tarefa_table extends Migration
             'id' => $this->primaryKey(),
             'titulo' => $this->string()->notNull(),
             'descricao' => $this->text(),
-            'data_criacao' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
+            'data_criacao' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'tarefa', 'status' => $this->string()->notNull()->defaultValue('pendente'),
+            'tarefa', 'data_vencimento' => $this->date()
         ]);
     }
 
