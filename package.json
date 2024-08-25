@@ -1,0 +1,15 @@
+{
+    "name": "my-yii2-project",
+    "version": "1.0.0",
+    "description": "My Yii2 project with npm dependencies",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Your Name",
+    "license": "ISC",
+    "dependencies": {
+      "jquery": "^3.6.0"
+    }
+  }
+  
