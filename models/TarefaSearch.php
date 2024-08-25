@@ -6,9 +6,6 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Tarefa;
 
-/**
- * TarefaSearch represents the model behind the search form of `app\models\Tarefa`.
- */
 class TarefaSearch extends Tarefa
 {
     public function rules()

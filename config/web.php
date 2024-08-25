@@ -5,10 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name' => 'Minhas Tarefas',
-    /*'catchAll' => [
-        'tarefa/index'
-    ],*/
+    'name' => 'Home',
     'language' => 'pt-BR',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],

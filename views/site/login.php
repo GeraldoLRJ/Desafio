@@ -20,11 +20,11 @@ $form = ActiveForm::begin([
     ],
 ]); 
 
-echo $form->field($model, 'username')->textInput(['autofocus' => true]);
-echo $form->field($model, 'password')->passwordInput();
+echo $form->field($model, 'username')->textInput(['autofocus' => true])->label('Nome');
+echo $form->field($model, 'password')->passwordInput()->label('Senha');
 echo $form->field($model, 'rememberMe')->checkbox([
     'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-]);
+])->label('Manter Conectado');
 ?>
 <div class="form-group">
     <div class="col-lg-offset-1 col-lg-11">

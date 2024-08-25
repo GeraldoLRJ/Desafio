@@ -10,9 +10,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
-/**
- * TarefaController implements the CRUD actions for Tarefa model.
- */
 class TarefaController extends Controller
 {
     public function behaviors()
@@ -45,7 +42,7 @@ class TarefaController extends Controller
         $searchModel = new TarefaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         $dataProvider->query->andWhere(['user_id' => Yii::$app->user->id]);
-
+        Yii::$app->session->setFlash('success', "Tarefas Carregadas com sucesso.");
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -66,6 +63,7 @@ class TarefaController extends Controller
         if ($this->request->isPost) {
             $model->user_id = Yii::$app->user->id;
             if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', "Tarefa Registrada com sucesso.");
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -86,6 +84,7 @@ class TarefaController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Tarefa Atualizada com sucesso.");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -97,6 +96,8 @@ class TarefaController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
+        Yii::$app->session->setFlash('success', "Tarefa Deletada com sucesso.");
 
         return $this->redirect(['index']);
     }
