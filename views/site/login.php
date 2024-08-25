@@ -34,4 +34,4 @@ echo $form->field($model, 'rememberMe')->checkbox([
 
 <?php ActiveForm::end(); ?>
 
-<p>Don't have an account? <?= Html::a('Sign up', ['site/signup']) ?></p>
+<p>Não tem conta? <?= Html::a('Registrar', ['site/signup']) ?></p>

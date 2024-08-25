@@ -30,7 +30,7 @@ class Tarefa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo'], 'required'],
+            [['titulo', 'user_id'], 'required'],
             [['descricao'], 'string'],
             [['data_criacao', 'data_vencimento'], 'safe'],
             [['titulo', 'status'], 'string', 'max' => 255],
@@ -50,5 +50,10 @@ class Tarefa extends \yii\db\ActiveRecord
             'status' => 'Status',
             'data_vencimento' => 'Data Vencimento',
         ];
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }

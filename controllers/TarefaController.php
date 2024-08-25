@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Tarefa;
 use app\models\TarefaSearch;
 use yii\web\Controller;
@@ -14,9 +15,6 @@ use yii\filters\AccessControl;
  */
 class TarefaController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -42,15 +40,11 @@ class TarefaController extends Controller
         );
     }
 
-    /**
-     * Lists all Tarefa models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $searchModel = new TarefaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider->query->andWhere(['user_id' => Yii::$app->user->id]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -58,12 +52,6 @@ class TarefaController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Tarefa model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -71,16 +59,12 @@ class TarefaController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Tarefa model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new Tarefa();
 
         if ($this->request->isPost) {
+            $model->user_id = Yii::$app->user->id;
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -93,13 +77,6 @@ class TarefaController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Tarefa model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -113,13 +90,6 @@ class TarefaController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Tarefa model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -127,13 +97,6 @@ class TarefaController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Tarefa model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Tarefa the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Tarefa::findOne(['id' => $id])) !== null) {
