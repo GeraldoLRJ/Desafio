@@ -29,12 +29,17 @@ class SignupForm extends Model
             return null;
         }
 
-        $user = new User();
+        $user = $this->createUserInstance();
         $user->username = $this->username;
         $user->password_hash = Yii::$app->security->generatePasswordHash($this->password);
         $user->auth_key = Yii::$app->security->generateRandomString();
         $user->access_token = Yii::$app->security->generateRandomString();
 
         return $user->save() ? $user : null;
+    }
+
+    protected function createUserInstance()
+    {
+        return new User();
     }
 }

@@ -68,6 +68,10 @@ class TarefaController extends Controller
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
+
+            if (!$model->save()) {
+                Yii::error('Failed to save model: ' . json_encode($model->errors));
+            }
         } else {
             $model->loadDefaultValues();
         }

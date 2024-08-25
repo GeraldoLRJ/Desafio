@@ -1,51 +1,68 @@
 <?php
-
 namespace tests\unit\models;
 
 use app\models\LoginForm;
+use app\models\User;
+use Yii;
 
 class LoginFormTest extends \Codeception\Test\Unit
 {
-    private $model;
-
-    protected function _after()
+    public function testLoginSuccessful()
     {
-        \Yii::$app->user->logout();
+        $user = $this->createMock(User::class);
+        $user->method('validatePassword')->willReturn(true);
+
+        $model = $this->getMockBuilder(LoginForm::class)
+            ->onlyMethods(['getUser'])
+            ->getMock();
+
+        $model->expects($this->atLeastOnce())
+            ->method('getUser')
+            ->willReturn($user);
+
+        $model->username = 'Geraldo';
+        $model->password = 'Geraldo';
+
+        $this->assertTrue($model->login());
     }
 
-    public function testLoginNoUser()
+    public function testLoginIncorrectPassword()
     {
-        $this->model = new LoginForm([
-            'username' => 'not_existing_username',
-            'password' => 'not_existing_password',
-        ]);
+        $user = $this->createMock(User::class);
+        $user->method('validatePassword')->willReturn(false);
 
-        verify($this->model->login())->false();
-        verify(\Yii::$app->user->isGuest)->true();
+        $model = $this->getMockBuilder(LoginForm::class)
+            ->onlyMethods(['getUser'])
+            ->getMock();
+
+        $model->expects($this->atLeastOnce())
+            ->method('getUser')
+            ->willReturn($user);
+
+        $model->username = 'Geraldo';
+        $model->password = 'Batata';
+
+        $this->assertFalse($model->login());
+        $this->assertArrayHasKey('password', $model->errors);
     }
 
-    public function testLoginWrongPassword()
+    public function testLoginUserNotFound()
     {
-        $this->model = new LoginForm([
-            'username' => 'demo',
-            'password' => 'wrong_password',
-        ]);
+        $model = $this->getMockBuilder(LoginForm::class)
+            ->onlyMethods(['getUser'])
+            ->getMock();
 
-        verify($this->model->login())->false();
-        verify(\Yii::$app->user->isGuest)->true();
-        verify($this->model->errors)->arrayHasKey('password');
+        $model->expects($this->atLeastOnce())
+            ->method('getUser')
+            ->willReturn(null);
+
+        $model->username = 'Batata';
+        $model->password = 'Batata';
+
+        $this->assertFalse($model->login());
+
+        print_r($model->errors);
+        $this->assertArrayHasKey('username', $model->errors);
     }
-
-    public function testLoginCorrect()
-    {
-        $this->model = new LoginForm([
-            'username' => 'demo',
-            'password' => 'demo',
-        ]);
-
-        verify($this->model->login())->true();
-        verify(\Yii::$app->user->isGuest)->false();
-        verify($this->model->errors)->arrayHasNotKey('password');
-    }
-
 }
+
