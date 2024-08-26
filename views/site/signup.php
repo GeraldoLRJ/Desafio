@@ -20,7 +20,7 @@ $this->title = 'Registrar';
         <?= $form->field($model, 'confirm_password')->passwordInput()->label('Confirmar Senha') ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+            <?= Html::submitButton('Registrar', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
         </div>
 
     <?php ActiveForm::end(); ?>
