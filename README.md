@@ -51,7 +51,7 @@ Voltando para a aba das suas tarefas, vão ser listadas as tarefas cadastradas.
 Você pode alterar a ordenação dos itens clicando sobre a coluna que deseja mudar a ordenação.
 ![ordernar](https://github.com/user-attachments/assets/8f8f54e7-e50a-488e-9fb5-8059b0c00738)
 
-Usando o campo de filtro, você pode digitar o que deseja filtrar e clicar em "Enter", para aplicar um filtro.
+Usando o campo de filtro, você pode digitar o que deseja filtrar e apertar a tecla "Enter", para aplicar um filtro.
 ![filtrar](https://github.com/user-attachments/assets/591c07a5-3ab9-4072-973c-3a56205015f7)
 
 Existem também a função de Visualizar as informações da tarefa.
