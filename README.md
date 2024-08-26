@@ -36,7 +36,7 @@ Agora você poderá acessar a sua conta.
 ![registrar_login](https://github.com/user-attachments/assets/0859aee9-a53e-4d76-810f-a5f3146f1204)
 
 
-Assim que acessar com sua conta, você poderá acessar a aba de Tarefas, incialmente não haverá nenhuma, então você já pode criar uma.
+Assim que acessar com sua conta, você poderá acessar a aba de "Tarefas", incialmente não haverá nenhuma, então você já pode criar uma.
 ![tarefas_vazio](https://github.com/user-attachments/assets/e2892a36-3add-48a7-8c5f-a502a004649c)
 
 Basta preencher todos os campos e salvar.
@@ -66,7 +66,7 @@ E a de "Deletar".
 ![deletar](https://github.com/user-attachments/assets/a73919c2-13e5-4c20-8e30-bf32716457bc)
 ![confirmar_deletar](https://github.com/user-attachments/assets/18f927fa-f808-4fa9-9a8e-59647e631b0a)
 
-É possível sair de sua conta clicando em Logout.
+É possível sair de sua conta clicando em "Logout".
 ![logout](https://github.com/user-attachments/assets/de3c9cdb-63c8-4b81-8f7c-3696b7f65f60)
 
 Se tiverem gostado, podem me contratar.
