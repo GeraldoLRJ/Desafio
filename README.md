@@ -40,9 +40,9 @@ Assim que acessar com sua conta, você poderá acessar a aba de Tarefas, incialm
 ![tarefas_vazio](https://github.com/user-attachments/assets/e2892a36-3add-48a7-8c5f-a502a004649c)
 
 Basta preencher todos os campos e salvar.
-Ao criar sua nova tarefa, ![criar_tarefa](https://github.com/user-attachments/assets/c8459332-a2e8-4421-84b2-6909a641c16d)
+![criar_tarefa](https://github.com/user-attachments/assets/c8459332-a2e8-4421-84b2-6909a641c16d)
 
-Você será direcionado a uma visualização das informações salvas da sua Tarefa.
+Ao criar sua nova tarefa, você será direcionado a uma visualização das informações salvas da sua Tarefa.
 ![apos_crair](https://github.com/user-attachments/assets/4702e7be-0f6e-43cc-9bdc-4f986d8d8529)
 
 Voltando para a aba das suas tarefas, vão ser listadas as tarefas cadastradas.
@@ -54,15 +54,15 @@ Você pode alterar a ordenação dos itens clicando sobre a coluna que deseja mu
 Usando o campo de filtro, você pode digitar o que deseja filtrar e apertar a tecla "Enter", para aplicar um filtro.
 ![filtrar](https://github.com/user-attachments/assets/591c07a5-3ab9-4072-973c-3a56205015f7)
 
-Existem também a função de Visualizar as informações da tarefa.
+Existem também a função de "Visualizar" as informações da tarefa.
 ![visualizar](https://github.com/user-attachments/assets/97714f2b-e67f-4f15-874a-41cd962425b6)
 ![vizualizar1](https://github.com/user-attachments/assets/2ee12b82-32fc-4d17-9b1d-3ed779224def)
 
-A função de Editar.
+A função de "Editar".
 ![editar](https://github.com/user-attachments/assets/1b772a11-06b2-44cb-9f98-b9db65f4d333)
 ![edicao_finalizada](https://github.com/user-attachments/assets/280a9968-edb7-493a-a498-2af8741bd12b)
 
-E a de Deletar.
+E a de "Deletar".
 ![deletar](https://github.com/user-attachments/assets/a73919c2-13e5-4c20-8e30-bf32716457bc)
 ![confirmar_deletar](https://github.com/user-attachments/assets/18f927fa-f808-4fa9-9a8e-59647e631b0a)
 
