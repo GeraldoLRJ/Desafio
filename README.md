@@ -23,3 +23,8 @@ Agora a aplicação já estará rodando em : `http://localhost:8080`
 
 Para executar os testes unitários, no arquivo raiz do projeto execute : <br/>
 `sudo docker exec -it yii2_app vendor/bin/codecept run unit`
+
+Segue agora uma explicação de como usar o Aplicativo:
+
+Inicialmente você pode ir para a aba de Login, onde voc~e pode entrar com sua conta ou criar uma em Registrar.
+![2024-08-25_22-55](https://github.com/user-attachments/assets/242f9787-3700-4142-b22a-3ada98d1dd21)
