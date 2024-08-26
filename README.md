@@ -15,9 +15,9 @@ Após fazer o clone do repositório você pode realizar o seguinte comando para 
 `sudo docker-compose up --build`
 
 Agora realize os seguintes comandos : <br/>
-`sudo docker exec -it yii2_app php yii migrate` <br/>
 `sudo docker exec -it yii2_app composer install` <br/>
-`sudo docker exec -it yii2_app bower install jquery --allow-root`
+`sudo docker exec -it yii2_app bower install jquery --allow-root` <br/>
+`sudo docker exec -it yii2_app php yii migrate`
 
 Agora a aplicação já estará rodando em : `http://localhost:8080` 
 
