@@ -67,6 +67,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return static::findOne(['username' => $username]);
     }
 
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
     public function getId()
     {
         return $this->id;

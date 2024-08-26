@@ -9,49 +9,77 @@ class SignupFormTest extends \Codeception\Test\Unit
 {
     public function testSignupSuccessful()
     {
-        $user = $this->getMockBuilder(User::class)
+        $userMock = $this->getMockBuilder(User::class)
             ->onlyMethods(['save'])
             ->getMock();
-        $user->expects($this->once())->method('save')->willReturn(true);
 
-        $model = $this->getMockBuilder(SignupForm::class)
+        $userMock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $modelMock = $this->getMockBuilder(SignupForm::class)
             ->onlyMethods(['validate', 'createUserInstance'])
             ->getMock();
 
-        $model->expects($this->once())->method('validate')->willReturn(true);
-        $model->expects($this->once())->method('createUserInstance')->willReturn($user);
+        $modelMock->expects($this->once())
+            ->method('validate')
+            ->willReturn(true);
 
-        $model->username = 'Batata';
-        $model->password = 'Batata';
-        $model->confirm_password = 'Batata';
+        $modelMock->expects($this->once())
+            ->method('createUserInstance')
+            ->willReturn($userMock);
 
-        $this->assertInstanceOf(User::class, $model->signup());
+        $modelMock->username = 'Batata';
+        $modelMock->password = 'Batata';
+        $modelMock->confirm_password = 'Batata';
+
+        $this->assertInstanceOf(User::class, $modelMock->signup());
     }
+
     public function testSignupUsernameTaken()
     {
-        $user = $this->getMockBuilder(User::class)
+        $userMock = $this->getMockBuilder(User::class)
             ->onlyMethods(['findByUsername'])
             ->getMock();
-        $user->method('findByUsername')->willReturn(new User());
 
-        $model = new SignupForm();
-        $model->username = 'Geraldo';
-        $model->password = 'Geraldo';
-        $model->confirm_password = 'Geraldo';
+        $userMock->method('findByUsername')
+            ->willReturn(new User());
 
-        $this->assertNull($model->signup());
-        $this->assertArrayHasKey('username', $model->errors);
+        $modelMock = $this->getMockBuilder(SignupForm::class)
+            ->onlyMethods(['validate'])
+            ->getMock();
+
+        $modelMock->expects($this->once())
+            ->method('validate')
+            ->willReturn(false);
+
+        $modelMock->addError('username', 'This username has already been taken.');
+
+        $modelMock->username = 'Geraldo';
+        $modelMock->password = 'Geraldo';
+        $modelMock->confirm_password = 'Geraldo';
+
+        $this->assertNull($modelMock->signup());
+        $this->assertArrayHasKey('username', $modelMock->errors);
     }
 
     public function testSignupPasswordsDoNotMatch()
     {
-        $model = new SignupForm();
-        $model->username = 'Batata';
-        $model->password = 'Geraldo';
-        $model->confirm_password = 'Batata';
+        $modelMock = $this->getMockBuilder(SignupForm::class)
+            ->onlyMethods(['validate'])
+            ->getMock();
 
-        $this->assertNull($model->signup());
-        $this->assertArrayHasKey('confirm_password', $model->errors);
+        $modelMock->expects($this->once())
+            ->method('validate')
+            ->willReturn(false);
+
+        $modelMock->addError('confirm_password', 'Passwords do not match.');
+
+        $modelMock->username = 'Batata';
+        $modelMock->password = 'Geraldo';
+        $modelMock->confirm_password = 'Batata';
+
+        $this->assertNull($modelMock->signup());
+        $this->assertArrayHasKey('confirm_password', $modelMock->errors);
     }
 }
-

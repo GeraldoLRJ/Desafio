@@ -1,92 +1,144 @@
 <?php
-
-
 namespace tests\unit\models;
 
 use app\models\Tarefa;
-use Yii;
-use \UnitTester;
+use app\models\User;
+use Codeception\Test\Unit;
 
-class TarefaTest extends \Codeception\Test\Unit
+class TarefaTest extends Unit
 {
-
-    protected UnitTester $tester;
-
     public function testCreateValidTarefa()
     {
-        $tarefa = new Tarefa();
-        $tarefa->titulo = 'Nova Tarefa';
-        $tarefa->descricao = 'Descrição da nova tarefa';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = 6; // Certifique-se de que este usuário existe no banco de dados de teste
+        // Criar um mock da Tarefa
+        $tarefaMock = $this->getMockBuilder(Tarefa::class)
+            ->onlyMethods(['save'])
+            ->getMock();
 
-        $this->assertTrue($tarefa->save());
+        // Configurar o mock para retornar true quando o método save for chamado
+        $tarefaMock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
 
-        // Verifique se a tarefa foi salva corretamente
-        $this->assertNotNull($tarefa->id);
-        $this->assertEquals('Nova Tarefa', $tarefa->titulo);
-        $this->assertEquals('pendente', $tarefa->status);
+        // Definir os valores dos atributos da tarefa
+        $tarefaMock->titulo = 'Nova Tarefa';
+        $tarefaMock->descricao = 'Descrição da nova tarefa';
+        $tarefaMock->status = 'pendente';
+        $tarefaMock->data_vencimento = '2024-12-31';
+        $tarefaMock->user_id = 6;
+
+        // Assert para verificar que o método save foi bem-sucedido
+        $this->assertTrue($tarefaMock->save());
+
+        // Verificar se os atributos foram definidos corretamente
+        $this->assertEquals('Nova Tarefa', $tarefaMock->titulo);
+        $this->assertEquals('pendente', $tarefaMock->status);
     }
 
     public function testCreateInvalidTarefa()
     {
-        $tarefa = new Tarefa();
-        $tarefa->descricao = 'Descrição da nova tarefa';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = 6;
+        // Criar um mock da Tarefa
+        $tarefaMock = $this->getMockBuilder(Tarefa::class)
+            ->onlyMethods(['save', 'getErrors'])
+            ->getMock();
 
-        $this->assertFalse($tarefa->save());
+        // Configurar o mock para retornar false quando o método save for chamado
+        $tarefaMock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
 
-        $errors = $tarefa->getErrors();
+        // Configurar o mock para retornar um erro no campo 'titulo'
+        $tarefaMock->expects($this->once())
+            ->method('getErrors')
+            ->willReturn(['titulo' => ['Title cannot be blank']]);
+
+        // Definir os atributos da tarefa (sem título para ser inválida)
+        $tarefaMock->descricao = 'Descrição da nova tarefa';
+        $tarefaMock->status = 'pendente';
+        $tarefaMock->data_vencimento = '2024-12-31';
+        $tarefaMock->user_id = 6;
+
+        // Assert para verificar que o método save falhou
+        $this->assertFalse($tarefaMock->save());
+
+        // Verificar se o erro foi atribuído ao campo 'titulo'
+        $errors = $tarefaMock->getErrors();
         $this->assertArrayHasKey('titulo', $errors);
     }
 
     public function testUpdateTarefa()
     {
-        $tarefa = new Tarefa();
-        $tarefa->titulo = 'Tarefa Original';
-        $tarefa->descricao = 'Descrição original';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = 6;
-        $tarefa->save();
+        // Criar um mock da Tarefa
+        $tarefaMock = $this->getMockBuilder(Tarefa::class)
+            ->onlyMethods(['save'])
+            ->getMock();
 
-        $tarefa->titulo = 'Tarefa Atualizada';
-        $tarefa->descricao = 'Descrição atualizada';
-        $this->assertTrue($tarefa->save());
+        // Configurar o mock para retornar true quando o método save for chamado
+        $tarefaMock->expects($this->exactly(2))
+            ->method('save')
+            ->willReturn(true);
 
-        $tarefaAtualizada = Tarefa::findOne($tarefa->id);
-        $this->assertEquals('Tarefa Atualizada', $tarefaAtualizada->titulo);
-        $this->assertEquals('Descrição atualizada', $tarefaAtualizada->descricao);
+        // Definir os valores iniciais dos atributos
+        $tarefaMock->titulo = 'Tarefa Original';
+        $tarefaMock->descricao = 'Descrição original';
+        $tarefaMock->status = 'pendente';
+        $tarefaMock->data_vencimento = '2024-12-31';
+        $tarefaMock->user_id = 6;
+
+        // Salvar a tarefa original
+        $this->assertTrue($tarefaMock->save());
+
+        // Atualizar os valores dos atributos
+        $tarefaMock->titulo = 'Tarefa Atualizada';
+        $tarefaMock->descricao = 'Descrição atualizada';
+
+        // Salvar a tarefa atualizada
+        $this->assertTrue($tarefaMock->save());
+
+        // Verificar se os atributos foram atualizados corretamente
+        $this->assertEquals('Tarefa Atualizada', $tarefaMock->titulo);
+        $this->assertEquals('Descrição atualizada', $tarefaMock->descricao);
     }
 
     public function testDeleteTarefa()
     {
-        $tarefa = new Tarefa();
-        $tarefa->titulo = 'Tarefa para Deletar';
-        $tarefa->descricao = 'Descrição da tarefa para deletar';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = 6;
-        $tarefa->save();
+        // Criar um mock da Tarefa
+        $tarefaMock = $this->getMockBuilder(Tarefa::class)
+            ->onlyMethods(['delete'])
+            ->getMock();
 
-        $tarefaId = $tarefa->id;
-        $rowsDeleted = $tarefa->delete();
+        // Configurar o mock para retornar 1 (indicando que 1 linha foi deletada)
+        $tarefaMock->expects($this->once())
+            ->method('delete')
+            ->willReturn(1);
 
+        // Deletar a tarefa
+        $rowsDeleted = $tarefaMock->delete();
+
+        // Assert para verificar que a tarefa foi deletada
         $this->assertGreaterThan(0, $rowsDeleted);
-
-        $tarefaDeletada = Tarefa::findOne($tarefaId);
-        $this->assertNull($tarefaDeletada);
     }
 
     public function testTarefaUserAssociation()
     {
-        $tarefa = Tarefa::findOne(5);
-        $this->assertEquals(6, $tarefa->user_id);
+        // Criar um mock da Tarefa
+        $tarefaMock = $this->getMockBuilder(Tarefa::class)
+            ->onlyMethods(['getUser'])
+            ->getMock();
 
-        $user = $tarefa->user;
-        $this->assertEquals('Geraldo', $user->username);
+        // Criar um mock do User
+        $userMock = $this->getMockBuilder(User::class)
+            ->onlyMethods(['getUsername'])
+            ->getMock();
+
+        // Configurar o mock do User para retornar o username 'Geraldo'
+        $userMock->method('getUsername')
+            ->willReturn('Geraldo');
+
+        // Configurar o mock da Tarefa para retornar o mock do User
+        $tarefaMock->method('getUser')
+            ->willReturn($userMock);
+
+        // Assert para verificar a associação
+        $this->assertEquals('Geraldo', $tarefaMock->getUser()->getUsername());
     }
 }

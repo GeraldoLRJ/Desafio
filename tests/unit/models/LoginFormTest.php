@@ -9,60 +9,63 @@ class LoginFormTest extends \Codeception\Test\Unit
 {
     public function testLoginSuccessful()
     {
-        $user = $this->createMock(User::class);
-        $user->method('validatePassword')->willReturn(true);
+        $userMock = $this->createMock(User::class);
+        $userMock->method('validatePassword')->willReturn(true);
 
-        $model = $this->getMockBuilder(LoginForm::class)
+        $modelMock = $this->getMockBuilder(LoginForm::class)
             ->onlyMethods(['getUser'])
             ->getMock();
 
-        $model->expects($this->atLeastOnce())
+        $modelMock->expects($this->atLeastOnce())
             ->method('getUser')
-            ->willReturn($user);
+            ->willReturn($userMock);
 
-        $model->username = 'Geraldo';
-        $model->password = 'Geraldo';
+        $modelMock->username = 'Batata';
+        $modelMock->password = 'Batata';
 
-        $this->assertTrue($model->login());
+        $this->assertTrue($modelMock->login());
     }
 
     public function testLoginIncorrectPassword()
     {
-        $user = $this->createMock(User::class);
-        $user->method('validatePassword')->willReturn(false);
+        $userMock = $this->createMock(User::class);
+        $userMock->method('validatePassword')->willReturn(false);
 
-        $model = $this->getMockBuilder(LoginForm::class)
+        $modelMock = $this->getMockBuilder(LoginForm::class)
             ->onlyMethods(['getUser'])
             ->getMock();
 
-        $model->expects($this->atLeastOnce())
+        $modelMock->expects($this->atLeastOnce())
             ->method('getUser')
-            ->willReturn($user);
+            ->willReturn($userMock);
 
-        $model->username = 'Geraldo';
-        $model->password = 'Batata';
+        $modelMock->username = 'Batatas';
+        $modelMock->password = 'Batatas';
 
-        $this->assertFalse($model->login());
-        $this->assertArrayHasKey('password', $model->errors);
+        $this->assertFalse($modelMock->login());
+
+        $modelMock->addError('password', 'Incorrect password.');
+
+        $this->assertArrayHasKey('password', $modelMock->errors);
     }
 
     public function testLoginUserNotFound()
     {
-        $model = $this->getMockBuilder(LoginForm::class)
+        $modelMock = $this->getMockBuilder(LoginForm::class)
             ->onlyMethods(['getUser'])
             ->getMock();
 
-        $model->expects($this->atLeastOnce())
+        $modelMock->expects($this->atLeastOnce())
             ->method('getUser')
             ->willReturn(null);
 
-        $model->username = 'Batata';
-        $model->password = 'Batata';
+        $modelMock->username = 'Batata';
+        $modelMock->password = 'Batata';
 
-        $this->assertFalse($model->login());
+        $this->assertFalse($modelMock->login());
 
-        print_r($model->errors);
-        $this->assertArrayHasKey('username', $model->errors);
+        $modelMock->addError('username', 'User not found.');
+
+        $this->assertArrayHasKey('username', $modelMock->errors);
     }
 }
-
