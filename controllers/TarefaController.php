@@ -1,139 +1,113 @@
 <?php
 
-namespace tests\unit\models;
+namespace app\controllers;
 
-use app\models\SignupForm;
+use Yii;
 use app\models\Tarefa;
-use app\models\User;
-use Codeception\Test\Unit;
+use app\models\TarefaSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
-class TarefaTest extends Unit
+class TarefaController extends Controller
 {
-    public function testCreateValidTarefa()
+    public function behaviors()
     {
-        $signupForm = new SignupForm();
-        $signupForm->username = 'Batata';
-        $signupForm->password = 'Batata';
-        $signupForm->confirm_password = 'Batata';
-        $user = $signupForm->signup();
-
-        $this->assertNotNull($user);
-        $this->assertInstanceOf(User::class, $user);
-        $this->assertEquals('Batata', $user->username);
-
-        $tarefa = new Tarefa();
-        $tarefa->titulo = 'Tarefa 1';
-        $tarefa->descricao = 'Descrição 1';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = $user->id;
-
-        $this->assertTrue($tarefa->save());
-
-        $this->assertNotNull($tarefa->id);
-        $this->assertEquals('Nova Tarefa', $tarefa->titulo);
-        $this->assertEquals('pendente', $tarefa->status);
-        $this->assertEquals($user->id, $tarefa->user_id);
+        return array_merge(
+            parent::behaviors(),
+            [   
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['index', 'view', 'create', 'update', 'delete', 'model'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
     }
 
-    public function testCreateInvalidTarefa()
+    public function actionIndex()
     {
-        $signupForm = new SignupForm();
-        $signupForm->username = 'Mauricio';
-        $signupForm->password = 'Mauricio';
-        $signupForm->confirm_password = 'Mauricio';
-        $user = $signupForm->signup();
-
-        $this->assertNotNull($user);
-        $this->assertInstanceOf(User::class, $user);
-
-        $tarefa = new Tarefa();
-        $tarefa->descricao = 'Tarefa 1';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = $user->id;
-
-        $this->assertFalse($tarefa->save());
-
-        $errors = $tarefa->getErrors();
-        $this->assertArrayHasKey('titulo', $errors);
+        $searchModel = new TarefaSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider->query->andWhere(['user_id' => Yii::$app->user->id]);
+        Yii::$app->session->setFlash('success', "Tarefas Carregadas com sucesso.");
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
-    public function testUpdateTarefa()
+    public function actionView($id)
     {
-        $signupForm = new SignupForm();
-        $signupForm->username = 'Batata';
-        $signupForm->password = 'Batata';
-        $signupForm->confirm_password = 'Batata';
-        $user = $signupForm->signup();
-
-        $this->assertNotNull($user);
-        $this->assertInstanceOf(User::class, $user);
-
-        $tarefa = new Tarefa();
-        $tarefa->titulo = 'Tarefa 1';
-        $tarefa->descricao = 'Tarefa 1';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = $user->id;
-        $tarefa->save();
-
-        $tarefa->titulo = 'Tarefa 2';
-        $tarefa->descricao = 'Tarefa 2';
-        $this->assertTrue($tarefa->save());
-
-        $tarefaAtualizada = Tarefa::findOne($tarefa->id);
-        $this->assertEquals('Tarefa Atualizada', $tarefaAtualizada->titulo);
-        $this->assertEquals('Descrição atualizada', $tarefaAtualizada->descricao);
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
-    public function testDeleteTarefa()
+    public function actionCreate()
     {
-        $signupForm = new SignupForm();
-        $signupForm->username = 'Batata';
-        $signupForm->password = 'Batata';
-        $signupForm->confirm_password = 'Batata';
-        $user = $signupForm->signup();
+        $model = new Tarefa();
 
-        $this->assertNotNull($user);
-        $this->assertInstanceOf(User::class, $user);
+        if ($this->request->isPost) {
+            $model->user_id = Yii::$app->user->id;
+            if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', "Tarefa Registrada com sucesso.");
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
 
-        $tarefa = new Tarefa();
-        $tarefa->titulo = 'Tarefa 1';
-        $tarefa->descricao = 'Tarefa 1';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = $user->id;
-        $tarefa->save();
+            if (!$model->save()) {
+                Yii::error('Failed to save model: ' . json_encode($model->errors));
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
 
-        $tarefaId = $tarefa->id;
-        $rowsDeleted = $tarefa->delete();
-        $this->assertGreaterThan(0, $rowsDeleted);
-
-        $tarefaDeletada = Tarefa::findOne($tarefaId);
-        $this->assertNull($tarefaDeletada);
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
-    public function testTarefaUserAssociation()
+    public function actionUpdate($id)
     {
-        $signupForm = new SignupForm();
-        $signupForm->username = 'Batata';
-        $signupForm->password = 'Batata';
-        $signupForm->confirm_password = 'Batata';
-        $user = $signupForm->signup();
+        $model = $this->findModel($id);
 
-        $this->assertNotNull($user);
-        $this->assertInstanceOf(User::class, $user);
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Tarefa Atualizada com sucesso.");
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
 
-        $tarefa = new Tarefa();
-        $tarefa->titulo = 'Tarefa 1';
-        $tarefa->descricao = 'Tarefa 1';
-        $tarefa->status = 'pendente';
-        $tarefa->data_vencimento = '2024-12-31';
-        $tarefa->user_id = $user->id;
-        $tarefa->save();
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
 
-        $this->assertEquals($user->id, $tarefa->user_id);
-        $this->assertEquals('Batata', $tarefa->user->username);
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        Yii::$app->session->setFlash('success', "Tarefa Deletada com sucesso.");
+
+        return $this->redirect(['index']);
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Tarefa::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
