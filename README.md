@@ -69,7 +69,7 @@ E a de "Deletar".
 É possível sair de sua conta clicando em "Logout".
 ![logout](https://github.com/user-attachments/assets/de3c9cdb-63c8-4b81-8f7c-3696b7f65f60)
 
-Se tiverem gostado, podem me contratar.
+Caso tenham gostado, ficarei feliz em ser contratado.
 ![Png](https://github.com/user-attachments/assets/ef5b6ef1-7696-4ab3-9448-c982b455821e)
 
 
