@@ -24,6 +24,41 @@ Agora a aplicação já estará rodando em: `http://localhost:8080`
 Para executar os testes unitários, no arquivo raiz do projeto execute: <br/>
 `sudo docker exec -it yii2_app vendor/bin/codecept run unit`
 
+Explicação das decisões técnicas: <br/>
+
+1. Introdução ao Projeto <br/>
+
+    Este projeto eu busquei trazer um sistema de tarefas de uma forma simples e cara, onde qualquer usuário possa se cadastrar e manipular suas tarefas. <br/>
+
+2. Escolhas de Arquitetura <br/>
+
+    Neste projeto segui o padrão MVC conforme informado, utilizando Models Views e Controllers no próprio Yii2 <br/>
+
+3. Tecnologias e Ferramentas <br/>
+
+    Foi utuilizada a Linguagem PHP, na versão 8.2.7, justamente por ser mais estável e atender bem as necessidades do projeto <br/>
+    O Framework utilizado foi o Yii2 onde correspondeu bem para desenvolver toda a aplicação. <br/>
+    O Banco de Dados Utilizado foi o Mysql. <br/>
+    Todo o projeto foi desenvolvido no VSCode <br/>
+
+4. Considerações de Segurança <br/>
+
+    Para maior segurança além do sistema de autenticação, as senhas são salvas em hash, e somente o usuário criador da tarefa pode manipular a mesma. <br/>
+
+6. Manutenibilidade e Testes <br/>
+
+    O uso de Testes Unitários com codecption foi implementado para garantir sempre a integridade do código. <br/>
+    Essa foi uma das partes mais importantes, pois implementando os testes unitário pude perceber falahas que estava deixando conforme o sistema se desenvolvia. <br/>
+
+7. Desafios e Soluções <br/>
+
+    Um dos maiores desafios que passei foi garantir o uso do docker para que tanto o Banco de Dados quanto  a Aplicação rodassem em conjunto e não conflitassem, principalmente durante o Build do Docker. <br/>
+    Consegui solucionar todas as principais dificuldades que vieram a aparecer <br/>
+
+8. Conclusão <br/>
+
+    Por fim, pude concluir que foi muito prático usar somente o Yii2 para o desenvolvimento de toda a aplicação. Além de ter entnedido que seria muito melhor desde o início estar usando a aplicação diretamente no Docker. <br/>
+
 Segue agora uma explicação de como usar o Aplicativo:
 
 Inicialmente você pode ir para a aba de Login, onde você pode entrar com sua conta ou criar uma em Registrar.
