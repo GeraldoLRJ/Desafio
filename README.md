@@ -53,7 +53,7 @@ Explicação das decisões técnicas: <br/>
 7. Desafios e Soluções <br/>
 
     Um dos maiores desafios que passei foi garantir o uso do docker para que tanto o Banco de Dados quanto  a Aplicação rodassem em conjunto e não conflitassem, principalmente durante o Build do Docker. <br/>
-    Consegui solucionar todas as principais dificuldades que vieram a aparecer <br/>
+    Consegui solucionar todas as principais dificuldades que vieram a aparecer. <br/>
 
 8. Conclusão <br/>
 
